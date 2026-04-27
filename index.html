@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<!-- ── PWA Meta Tags ── -->
+<meta name="theme-color" content="#FF9F43">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PetLife">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.svg">
+<title>共生宠物 · PetLife</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+
+<!-- ── 样式（顺序：base → 各模块 → 特效） ── -->
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/onboarding.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/tasks.css">
+<link rel="stylesheet" href="css/pet.css">
+<link rel="stylesheet" href="css/bag.css">
+<link rel="stylesheet" href="css/stats.css">
+<link rel="stylesheet" href="css/modals.css">
+<link rel="stylesheet" href="css/fx.css">
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     SCREEN 1 · 选蛋引导页
+     ════════════════════════════════════════════ -->
+<div class="screen active" id="s-ob">
+  <div class="stars-bg" id="stars"></div>
+
+  <div class="ob-title">
+    <div class="sub">✨ 选择你的伙伴 ✨</div>
+    <h1>🌟 选择你的<br>生命之蛋 🌟</h1>
+    <p>它将与你共度每一天，你的行动决定它的未来</p>
+  </div>
+
+  <div class="eggs-grid" id="eggs-grid">
+    <div class="egg-card" data-type="cat">
+      <span class="egg-em">🔥</span>
+      <span class="egg-nm">火焰蛋</span>
+      <span class="egg-tp">猫系宠物</span>
+    </div>
+    <div class="egg-card" data-type="fish">
+      <span class="egg-em">🌊</span>
+      <span class="egg-nm">海洋蛋</span>
+      <span class="egg-tp">鱼系宠物</span>
+    </div>
+    <div class="egg-card" data-type="rabbit">
+      <span class="egg-em">🌿</span>
+      <span class="egg-nm">森林蛋</span>
+      <span class="egg-tp">兔系宠物</span>
+    </div>
+    <div class="egg-card" data-type="bird">
+      <span class="egg-em">⭐</span>
+      <span class="egg-nm">星空蛋</span>
+      <span class="egg-tp">鸟系宠物</span>
+    </div>
+  </div>
+
+  <button class="ob-btn" id="ob-btn">确认选择 →</button>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SCREEN 2 · 宠物命名页
+     ════════════════════════════════════════════ -->
+<div class="screen" id="s-nm">
+  <div class="nm-box">
+    <span class="nm-egg" id="nm-egg">🥚</span>
+    <h2>给你的宠物起个名字！</h2>
+    <p>这个名字将伴随它的一生</p>
+    <div class="nm-row">
+      <input class="nm-inp" id="nm-inp" type="text" placeholder="输入名字..." maxlength="8" autocomplete="off">
+      <button class="nm-ok" id="nm-ok">确认 →</button>
+    </div>
+    <div class="chips" id="nm-chips"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SCREEN 3 · 主应用
+     ════════════════════════════════════════════ -->
+<div class="screen" id="s-main">
+
+  <!-- ── Header ── -->
+  <div class="hdr">
+    <div class="hdr-top">
+      <div class="hdr-date" id="hdr-date"></div>
+      <div class="hdr-badge" id="hdr-badge">
+        <span class="hdr-em" id="hdr-em">🥚</span>
+        <div>
+          <div class="hdr-pname" id="hdr-nm">宠物</div>
+          <div class="hdr-plv"   id="hdr-lv">Lv.1</div>
+          <div class="hdr-xp"><div class="hdr-xpf" id="hdr-xpf" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tab 内容区 ── -->
+  <div class="tab-area">
+
+    <!-- TAB: 任务 -->
+    <div class="tab active" id="tab-tasks">
+      <div id="streak-area"></div>
+      <div class="dprog">
+        <div class="dplb"><span>今日进度</span><span id="dp-txt">0/0</span></div>
+        <div class="dpb"><div class="dpf" id="dp-fill" style="width:0%"></div></div>
+      </div>
+      <div id="tasks-list"></div>
+      <button class="add-btn" id="add-task-btn">＋ 添加新任务</button>
+    </div>
+
+    <!-- TAB: 宠物 -->
+    <div class="tab" id="tab-pet">
+      <div class="pet-tab">
+        <div class="pet-disp">
+          <span class="pet-big" id="pet-big">🥚</span>
+          <div class="pet-nm"  id="pet-nm">我的宠物</div>
+          <div class="pet-lv"  id="pet-lv">⭐ Lv.1 蛋宝宝</div>
+          <div class="pet-msg" id="pet-msg">正在耐心等待孵化...</div>
+        </div>
+        <div class="pet-evo">
+          <div class="evo-title">🔮 进化路线</div>
+          <div class="evo-stages" id="evo-stages"></div>
+        </div>
+        <div class="xp-card">
+          <div class="xp-lb"><span>经验值</span><span id="xp-txt">0 / 100</span></div>
+          <div class="xp-bar"><div class="xp-f" id="xp-f" style="width:0%"></div></div>
+        </div>
+        <div class="stats-card">
+          <div class="sc-title">🎯 宠物属性</div>
+          <div id="stat-rows"></div>
+        </div>
+        <div class="traits-card">
+          <div class="tr-title">🏷 性格标签</div>
+          <div class="tr-list" id="tr-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: 背包 -->
+    <div class="tab" id="tab-bag">
+      <div class="bag-tab">
+        <div class="bag-st">🍱 食物库存</div>
+        <div class="food-grid" id="food-grid"></div>
+        <div class="bag-st">🎒 道具库存</div>
+        <div class="food-grid" id="tool-grid"></div>
+      </div>
+    </div>
+
+    <!-- TAB: 统计 -->
+    <div class="tab" id="tab-stats">
+      <div class="stats-tab">
+        <div class="st-hero">
+          <div class="st-per" id="st-per"></div>
+          <div class="st-t">本周报告 📈</div>
+          <div class="st-gr" id="st-gr"></div>
+        </div>
+        <div class="pet-comment">
+          <span class="cm-em" id="cm-em">😺</span>
+          <div class="cm-bub"><div class="cm-txt" id="cm-txt">加载中...</div></div>
+        </div>
+        <div class="cc">
+          <div class="cc-t">📅 每日完成率</div>
+          <div class="bar-chart" id="bar-chart"></div>
+        </div>
+        <div class="cc">
+          <div class="cc-t">🎯 任务分布</div>
+          <div id="cat-chart"></div>
+        </div>
+        <div class="ach-card">
+          <div class="ach-title">🏆 成就墙 <span class="ach-pct" id="ach-pct">0/12 已解锁</span></div>
+          <div class="ach-grid" id="ach-grid"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-area -->
+
+  <!-- ── 底部导航 ── -->
+  <div class="bnav">
+    <button class="nb active" data-tab="tasks"><span class="nb-ic">📋</span><span class="nb-lb">任务</span></button>
+    <button class="nb"        data-tab="pet">  <span class="nb-ic">🐾</span><span class="nb-lb">宠物</span></button>
+    <button class="nb"        data-tab="bag">  <span class="nb-ic">🎒</span><span class="nb-lb">背包</span></button>
+    <button class="nb"        data-tab="stats"><span class="nb-ic">📊</span><span class="nb-lb">统计</span></button>
+  </div>
+
+</div><!-- /s-main -->
+
+<!-- ════════════════════════════════════════════
+     MODALS
+     ════════════════════════════════════════════ -->
+
+<!-- 添加任务 -->
+<div class="overlay" id="m-add">
+  <div class="sheet">
+    <div class="sh-hdl"></div>
+    <div class="sh-t">✏️ 添加新任务</div>
+    <div class="fg">
+      <label>任务名称</label>
+      <input class="finp" id="f-title" type="text" placeholder="今天要完成什么？" autocomplete="off">
+    </div>
+    <div class="fg">
+      <label>分类</label>
+      <div class="rb" id="cat-btns"></div>
+    </div>
+    <div class="fg">
+      <label>难度</label>
+      <div class="dr" id="diff-btns"></div>
+    </div>
+    <div class="fg">
+      <label>时间段</label>
+      <div class="rb" id="time-btns"></div>
+    </div>
+    <div class="fg">
+      <label>计划时间（可选）</label>
+      <input class="finp" id="f-time" type="time">
+    </div>
+    <button class="sbmt" id="submit-task">🐾 添加任务，开始喂养！</button>
+  </div>
+</div>
+
+<!-- 任务完成 -->
+<div class="overlay" id="m-done">
+  <div class="sheet">
+    <div class="sh-hdl"></div>
+    <span class="cd-em">✅</span>
+    <div class="cd-t">任务完成！</div>
+    <div class="cd-s" id="cd-s"></div>
+    <div class="cd-box">
+      <div class="cd-bl">🎁 获得食物奖励</div>
+      <div class="cd-foods" id="cd-foods"></div>
+    </div>
+    <div class="cd-stats" id="cd-stats"></div>
+    <button class="cont" id="cont-btn">继续加油！💪</button>
+  </div>
+</div>
+
+<!-- 喂食 -->
+<div class="overlay" id="m-feed">
+  <div class="sheet">
+    <div class="sh-hdl"></div>
+    <div class="sh-t" id="feed-t">🍽 喂食</div>
+    <div style="text-align:center;padding:20px 0 24px">
+      <span id="feed-em"   style="font-size:72px;display:block;margin-bottom:12px;animation:wobble 2s ease-in-out infinite"></span>
+      <div  id="feed-desc" style="font-size:14px;color:var(--gy);font-weight:600"></div>
+      <div  id="feed-eff"  style="font-size:13px;color:var(--or);font-weight:700;margin-top:8px"></div>
+      <div  id="feed-preview" style="margin-top:16px;display:flex;gap:10px;justify-content:center"></div>
+    </div>
+    <button class="sbmt" id="feed-btn">🐾 喂食！</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     全局 FX 元素
+     ════════════════════════════════════════════ -->
+<div class="toast"   id="toast"></div>
+<div class="cf-wrap" id="cfwrap"></div>
+<div class="lvup"    id="lvup">
+  <span class="lu-em" id="lu-em">🎉</span>
+  <div  class="lu-t"  id="lu-t">升级啦！</div>
+  <div  class="lu-s"  id="lu-s"></div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     脚本（加载顺序 = 依赖顺序）
+     ════════════════════════════════════════════ -->
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/router.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/onboarding.js"></script>
+<script src="js/pet.js"></script>
+<script src="js/tasks.js"></script>
+<script src="js/bag.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/modals.js"></script>
+<script src="js/app.js"></script>
+
+<!-- ── Service Worker Registration ── -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('./sw.js', { scope: './' });
+    });
+  }
+</script>
+
+</body>
+</html>
